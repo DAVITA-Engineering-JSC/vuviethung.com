@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import { readingMinutes, topicBySlug } from '../consts';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const topic = topicBySlug(post.data.topic);
+---
+
+<article class="post">
+  <FormattedDate date={post.data.pubDate} />
+  <div>
+    <h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
+    <p class="excerpt">{post.data.description}</p>
+    <div class="meta">
+      {topic && <a class="tag" href={`/chu-de/${topic.slug}/`}>{topic.name}</a>}
+      <span>{readingMinutes(post.body)} phút đọc</span>
+    </div>
+  </div>
+</article>

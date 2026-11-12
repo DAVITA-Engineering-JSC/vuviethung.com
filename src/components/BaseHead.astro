@@ -1,45 +1,83 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
+// global.css duoc nap o day de moi trang dung chung mot bo giao dien.
 import '../styles/global.css';
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+  title: string;
+  description: string;
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 ---
 
-<!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
+<link rel="alternate" type="application/rss+xml" title={title} href="/rss.xml" />
 
-<!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<!-- Chon giao dien sang hoac toi truoc khi ve trang, de khong bi nhay mau.
+     Sang: 06:00 den 17:59 theo gio tren may nguoi xem. Toi: thoi gian con lai.
+     Nguoi xem bam nut doi giao dien thi lua chon duoc giu toi moc 06:00 hoac 18:00 ke tiep. -->
+<script is:inline>
+(function () {
+  var KEY = 'vvh-theme';
+  var DAY_START = 6, DAY_END = 18;
+  function autoTheme(d) { var h = d.getHours(); return (h >= DAY_START && h < DAY_END) ? 'light' : 'dark'; }
+  function nextBoundary(d) {
+    var n = new Date(d.getTime()); n.setMinutes(0, 0, 0);
+    var h = d.getHours();
+    if (h < DAY_START) n.setHours(DAY_START);
+    else if (h < DAY_END) n.setHours(DAY_END);
+    else { n.setDate(n.getDate() + 1); n.setHours(DAY_START); }
+    return n.getTime();
+  }
+  function read() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY));
+      if (o && o.until > Date.now() && (o.theme === 'light' || o.theme === 'dark')) return o;
+    } catch (e) {}
+    return null;
+  }
+  function apply() {
+    var o = read();
+    var theme = o ? o.theme : autoTheme(new Date());
+    var el = document.documentElement;
+    el.setAttribute('data-theme', theme);
+    el.setAttribute('data-mode', o ? 'manual' : 'auto');
+    return { theme: theme, manual: !!o };
+  }
+  window.vvhTheme = {
+    apply: apply,
+    set: function (theme) {
+      try { localStorage.setItem(KEY, JSON.stringify({ theme: theme, until: nextBoundary(new Date()) })); } catch (e) {}
+      return apply();
+    },
+    clear: function () { try { localStorage.removeItem(KEY); } catch (e) {} return apply(); }
+  };
+  apply();
+})();
+</script>
 
-<!-- Canonical URL -->
+<link rel="preload" href="/fonts/be-vietnam-pro-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/be-vietnam-pro-vietnamese-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="vi_VN" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
 
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
