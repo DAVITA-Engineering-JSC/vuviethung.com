@@ -20,13 +20,14 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <link rel="alternate" type="application/rss+xml" title={title} href="/rss.xml" />
 
 <!-- Chon giao dien sang hoac toi truoc khi ve trang, de khong bi nhay mau.
-     Sang: 06:00 den 17:59 theo gio tren may nguoi xem. Toi: thoi gian con lai.
-     Nguoi xem bam nut doi giao dien thi lua chon duoc giu toi moc 06:00 hoac 18:00 ke tiep. -->
+     Mac dinh: sang, vao bat ky gio nao.
+     Nguoi xem bam nut doi sang toi thi lua chon duoc giu tren may ho. -->
 <script is:inline>
 (function () {
   var KEY = 'vvh-theme';
   var DAY_START = 6, DAY_END = 18;
-  function autoTheme(d) { var h = d.getHours(); return (h >= DAY_START && h < DAY_END) ? 'light' : 'dark'; }
+  // Mac dinh luon la giao dien sang. Giao dien toi chi bat khi nguoi xem tu bam nut.
+  function autoTheme(d) { return 'light'; }
   function nextBoundary(d) {
     var n = new Date(d.getTime()); n.setMinutes(0, 0, 0);
     var h = d.getHours();
@@ -53,7 +54,7 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
   window.vvhTheme = {
     apply: apply,
     set: function (theme) {
-      try { localStorage.setItem(KEY, JSON.stringify({ theme: theme, until: nextBoundary(new Date()) })); } catch (e) {}
+      try { localStorage.setItem(KEY, JSON.stringify({ theme: theme, until: Date.now() + 365 * 24 * 3600 * 1000 })); } catch (e) {}
       return apply();
     },
     clear: function () { try { localStorage.removeItem(KEY); } catch (e) {} return apply(); }
