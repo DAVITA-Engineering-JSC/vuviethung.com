@@ -165,3 +165,10 @@ h1,h2,h3,h4{line-height:1.25;letter-spacing:-0.01em;text-wrap:balance}
 @media (max-width:640px){body{font-size:16px}.head-row{gap:12px;height:60px}.brand-name{display:none}.nav a{padding:8px 9px;font-size:14px}.theme-btn .lbl{display:none}.theme-btn{padding:0 11px}.post{grid-template-columns:1fr;gap:4px}.about{grid-template-columns:1fr}.avatar{width:84px;height:84px;font-size:28px}.topics{grid-template-columns:1fr}.topic{min-height:0}.prose{font-size:17px}.prose pre{padding:14px 16px;font-size:14px}.foot-links a,.more,.read{padding:8px 0}.hero h1,.page-head h1,.article-head h1{overflow-wrap:break-word}}
 @media (max-width:420px){.nav a.hide-s{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none !important;scroll-behavior:auto !important}}
+
+.story{display:grid;grid-template-columns:1fr 1fr;gap:28px 20px;margin:1.6em 0 2.4em}
+.story figure{margin:0}
+.story img{display:block;width:100%;height:auto;aspect-ratio:9 / 16;object-fit:cover;border:1px solid var(--line,rgba(0,0,0,.12))}
+.story figcaption{margin-top:10px;font-size:.92em;line-height:1.5}
+.story figcaption b{display:block;font-size:.78em;font-weight:600;letter-spacing:.06em;opacity:.6;margin-bottom:2px}
+@media (max-width:520px){.story{grid-template-columns:1fr;gap:24px}}
