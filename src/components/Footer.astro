@@ -14,7 +14,7 @@ const year = new Date().getFullYear();
         <a href="/rss.xml">RSS</a>
       </div>
     </div>
-    <p class="theme-note"><span id="themeNote"></span> <button type="button" id="themeAuto" hidden>Trở về tự động</button></p>
+    <p class="theme-note"><span id="themeNote"></span> <button type="button" id="themeAuto" hidden>Trở về mặc định</button></p>
   </div>
 </footer>
 
@@ -40,7 +40,7 @@ const year = new Date().getFullYear();
     var clock = pad(h) + ':' + pad(now.getMinutes());
     if (note) note.textContent = state.manual
       ? 'Giao diện ' + (isDark ? 'tối' : 'sáng') + ', do bạn chọn.'
-      : 'Giao diện ' + (isDark ? 'tối' : 'sáng') + ', tự động theo giờ của bạn (' + clock + ').';
+      : 'Giao diện sáng, mặc định của trang.';
     if (autoBtn) autoBtn.hidden = !state.manual;
     if (greeting) greeting.textContent = h >= 5 && h < 11 ? 'Chào buổi sáng'
       : h >= 11 && h < 13 ? 'Chào buổi trưa'
